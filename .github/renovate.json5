@@ -1,0 +1,21 @@
+{
+  extends: [
+    'local>topicusonderwijs/renovate-config:go.json5',
+  ],
+  enabledManagers: [
+    'github-actions',
+    'dockerfile',
+    'gomod',
+  ],
+  packageRules: [
+    {
+      matchManagers: ["dockerfile", "gomod"],
+      matchUpdateTypes: [
+        "digest",
+        "patch",
+        "minor",
+      ],
+      automerge: true,
+    },
+  ],
+}
