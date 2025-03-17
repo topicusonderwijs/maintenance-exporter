@@ -58,7 +58,7 @@ jobs:
         uses: appany/helm-oci-chart-releaser@v0.4.2
         with:
           name: maintenance-exporter
-          repository: ${{ github.repository_owner }}
+          repository: ${{ github.repository_owner }}/charts
           tag: ${{ fromJSON(steps.goreleaser.outputs.metadata).version }}
           path: deployment/helm/maintenance-exporter
           registry: ghcr.io
