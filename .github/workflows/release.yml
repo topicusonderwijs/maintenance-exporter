@@ -59,7 +59,7 @@ jobs:
         with:
           name: maintenance-exporter
           repository: ${{ github.repository_owner }}
-          tag: ${{ toJSON(steps.goreleaser.outputs.metadata).version }}
+          tag: ${{ fromJSON(steps.goreleaser.outputs.metadata).version }}
           registry: ghcr.io
           registry_username: ${{ github.actor }}
           registry_password: ${{ secrets.GITHUB_TOKEN }}
