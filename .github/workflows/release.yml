@@ -60,6 +60,7 @@ jobs:
           name: maintenance-exporter
           repository: ${{ github.repository_owner }}/charts
           tag: ${{ fromJSON(steps.goreleaser.outputs.metadata).version }}
+          app_version: ${{ fromJSON(steps.goreleaser.outputs.metadata).version }}
           path: deployment/helm/maintenance-exporter
           registry: ghcr.io
           registry_username: ${{ github.actor }}
