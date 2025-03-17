@@ -1,0 +1,65 @@
+builds:
+  - main: ./
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      # - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - "-s -w -X github.com/topicusonderwijs/maintenance-exporter/version={{ .Version }} -X github.com/topicusonderwijs/maintenance-exporter/commit={{ .Commit }} -X github.com/topicusonderwijs/maintenance-exporter/date={{ .CommitDate }}"
+
+archives:
+  - id: archives
+    format: binary
+    name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}"
+
+checksum:
+  name_template: "{{ .ProjectName }}-checksums.txt"
+
+snapshot:
+  name_template: "git-{{.Commit}}"
+
+release:
+  name_template: "v{{.Version}}"
+
+changelog:
+  skip: true
+
+dockers:
+  - image_templates: ["ghcr.io/{{ .Env.GITHUB_OWNER }}/{{ .ProjectName }}:{{ .Version }}-amd64"]
+    dockerfile: Dockerfile.goreleaser
+    use: buildx
+    extra_files:
+      - config.yaml.sample
+    build_flag_templates:
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--platform=linux/amd64"
+  - image_templates: ["ghcr.io/{{ .Env.GITHUB_OWNER }}/{{ .ProjectName }}:{{ .Version }}-arm64v8"]
+    goarch: arm64
+    dockerfile: Dockerfile.goreleaser
+    use: buildx
+    extra_files:
+      - config.yaml.sample
+    build_flag_templates:
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--platform=linux/arm64/v8"
+
+docker_manifests:
+  - name_template: ghcr.io/{{ .Env.GITHUB_OWNER }}/{{ .ProjectName }}:{{ .Version }}
+    image_templates:
+      - ghcr.io/{{ .Env.GITHUB_OWNER }}/{{ .ProjectName }}:{{ .Version }}-amd64
+      - ghcr.io/{{ .Env.GITHUB_OWNER }}/{{ .ProjectName }}:{{ .Version }}-arm64v8
+  - name_template: ghcr.io/{{ .Env.GITHUB_OWNER }}/{{ .ProjectName }}:latest
+    image_templates:
+      - ghcr.io/{{ .Env.GITHUB_OWNER }}/{{ .ProjectName }}:{{ .Version }}-amd64
+      - ghcr.io/{{ .Env.GITHUB_OWNER }}/{{ .ProjectName }}:{{ .Version }}-arm64v8

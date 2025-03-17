@@ -12,8 +12,14 @@ import (
 	"github.com/spf13/viper"
 )
 
-var c Config
-var tz *time.Location
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+
+	c Config
+	tz *time.Location
+)
 
 // ExporterConfig holds the configuration of the Exporter service.
 type ExporterConfig struct {
@@ -191,6 +197,7 @@ func init() {
 }
 
 func main() {
+	log.Printf("maintenance-exporter, version %s (commit %s, built at %s)\n", version, commit, date)
 
 	s := gocron.NewScheduler(tz)
 	_ = s
