@@ -2,7 +2,7 @@ module github.com/topicusonderwijs/maintenance-exporter
 
 go 1.23
 
-require github.com/go-co-op/gocron v1.37.0
+require github.com/go-co-op/gocron/v2 v2.16.1
 
 require (
 	github.com/sirupsen/logrus v1.9.3
@@ -12,10 +12,11 @@ require (
 require (
 	github.com/VictoriaMetrics/metrics v1.35.2
 	github.com/fsnotify/fsnotify v1.8.0
+	github.com/go-co-op/gocron v1.37.0
 )
 
 require (
-	github.com/google/uuid v1.4.0 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/konsorten/go-windows-terminal-sequences v1.0.3 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
