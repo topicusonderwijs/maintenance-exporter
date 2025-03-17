@@ -27,7 +27,7 @@ release:
   name_template: "v{{.Version}}"
 
 changelog:
-  skip: true
+  disable: true
 
 dockers:
   - image_templates: ["ghcr.io/{{ .Env.GITHUB_OWNER }}/{{ .ProjectName }}:{{ .Version }}-amd64"]
