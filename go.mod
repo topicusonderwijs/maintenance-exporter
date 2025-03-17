@@ -10,7 +10,7 @@ require (
 )
 
 require (
-	github.com/VictoriaMetrics/metrics v1.18.1
+	github.com/VictoriaMetrics/metrics v1.35.2
 	github.com/fsnotify/fsnotify v1.8.0
 )
 
@@ -33,7 +33,7 @@ require (
 	github.com/valyala/histogram v1.2.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
-	golang.org/x/sys v0.13.0 // indirect
+	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/ini.v1 v1.66.4 // indirect
