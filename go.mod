@@ -1,6 +1,6 @@
-module github.com/jzandbergen/maintenance-exporter
+module github.com/topicusonderwijs/maintenance-exporter
 
-go 1.17
+go 1.23
 
 require github.com/go-co-op/gocron v1.13.0
 
