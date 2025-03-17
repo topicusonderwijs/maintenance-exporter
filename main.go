@@ -7,7 +7,7 @@ import (
 
 	"github.com/VictoriaMetrics/metrics"
 	"github.com/fsnotify/fsnotify"
-	"github.com/go-co-op/gocron"
+	"github.com/go-co-op/gocron/v2"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
