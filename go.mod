@@ -11,7 +11,7 @@ require (
 
 require (
 	github.com/VictoriaMetrics/metrics v1.18.1
-	github.com/fsnotify/fsnotify v1.5.1
+	github.com/fsnotify/fsnotify v1.5.4
 )
 
 require (
