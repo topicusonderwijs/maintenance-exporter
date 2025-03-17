@@ -2,17 +2,12 @@ module github.com/topicusonderwijs/maintenance-exporter
 
 go 1.23
 
-require github.com/go-co-op/gocron/v2 v2.16.1
-
-require (
-	github.com/sirupsen/logrus v1.9.3
-	github.com/spf13/viper v1.20.0
-)
-
 require (
 	github.com/VictoriaMetrics/metrics v1.35.2
 	github.com/fsnotify/fsnotify v1.8.0
 	github.com/go-co-op/gocron v1.37.0
+	github.com/sirupsen/logrus v1.9.3
+	github.com/spf13/viper v1.11.0
 )
 
 require (
