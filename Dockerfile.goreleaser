@@ -1,0 +1,5 @@
+FROM alpine:3.21
+ENTRYPOINT ["/maintenance-exporter"]
+RUN apk --no-cache add tzdata
+COPY config.yaml.sample /etc/maintenance-exporter/config.yaml
+COPY maintenance-exporter /
