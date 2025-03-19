@@ -1,6 +1,6 @@
 module github.com/topicusonderwijs/maintenance-exporter
 
-go 1.23
+go 1.24
 
 require (
 	github.com/VictoriaMetrics/metrics v1.35.2
