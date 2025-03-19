@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: goestin/maintenance-exporter
+  repository: ghcr.io/topicusonderwijs/maintenance-exporter
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
