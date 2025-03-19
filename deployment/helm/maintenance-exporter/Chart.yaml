@@ -2,5 +2,5 @@ apiVersion: v2
 name: maintenance-exporter
 description: A metric to signal maintenance windows.
 type: application
-version: 1.0.0
-appVersion: "v1.0.0"
+version: 0.0.0-dev
+appVersion: dev
