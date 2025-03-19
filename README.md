@@ -30,6 +30,8 @@ AlertManagers `inhibit_rule`.
 
 ## Configuration
 
+**BREAKING CHANGE v0.2.0**: In the cron format day `7` is not a valid expression
+anymore for sunday. Use `0` instead.
 
 ### Maintenance Exporter
 
@@ -50,7 +52,7 @@ windows:
   - name: restore staging     # Note: names can be identical, and labels can be
                               #       used to make the "maintenance window" 
                               #       unique.
-    cron: "0 12 * * 7"
+    cron: "0 12 * * 0"
     duration: 2h
     labels:
       component: bar
