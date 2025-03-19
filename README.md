@@ -97,4 +97,9 @@ inhibit_rules:
       - '{component="foo"}'
 ```
 
+## Releases
 
+- Do __not__ edit the Helm chart version / appVersion manually
+- Changes to the draft release are overwritten by new commits, so customize the release when you are actually publishing the release
+- The release tag will be used as the version for the application and Helm chart
+- After publishing the release the `release` workflow will attach the binaries to the release, and publish the images and Helm chart to ghcr.io
