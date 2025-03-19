@@ -24,5 +24,5 @@ docker:
     COPY +build/zoneinfo /usr/share/zoneinfo
     COPY +build/maintenance-exporter /app/maintenance-exporter
     ENTRYPOINT ["/app/maintenance-exporter"]
-    SAVE IMAGE goestin/maintenance-exporter:v0.2.0
+    SAVE IMAGE goestin/maintenance-exporter:v1.0.0
 
