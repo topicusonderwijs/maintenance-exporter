@@ -39,16 +39,16 @@ type Config struct {
 }
 
 // MaintenaceWindow is an instance of a Maintenance Window. It holds the:
-// - Duration: How long the maintenance window should stay active after
-//   it has been enabled by the scheduler.
-// - Gauge: The actual prometheus metric.
-// - Job: A reference to the Job as it is instantiated in by the scheduler.
+//   - Duration: How long the maintenance window should stay active after
+//     it has been enabled by the scheduler.
+//   - Gauge: The actual prometheus metric.
+//   - Job: A reference to the Job as it is instantiated in by the scheduler.
 type MaintenanceWindow struct {
 	Name           string
 	Labels         map[string]string
 	CronExpression string
 	Duration       time.Duration
-	Job            *gocron.Job
+	Job            gocron.Job
 	Gauge          *metrics.Gauge
 	gaugeValue     float64
 }
@@ -64,8 +64,13 @@ func (m *MaintenanceWindow) Task() {
 	m.setActive()
 	select {
 	case <-time.After(m.Duration):
+		nextRunTime, err := m.Job.NextRun()
+		if err != nil {
+			log.Printf("ERROR: Could not retrieve next runtime: %v", err)
+		}
+
 		log.Printf("Maintenance Window Closed: \"%v\" Next run: %v",
-			m.Name, m.Job.NextRun().In(tz).Format("2006-01-02 15:04:05"))
+			m.Name, nextRunTime.In(tz).Format("2006-01-02 15:04:05"))
 		m.setInactive()
 	}
 
@@ -106,7 +111,7 @@ func (m *MaintenanceWindow) getGaugeValue() float64 {
 // NewMaintenanceWindow instantiates a MaintenanceWindow from string values. The
 // string values are parsed to the according types.
 func NewMaintenanceWindow(
-	s *gocron.Scheduler, c, d, n string, l map[string]string) (*MaintenanceWindow, error) {
+	s gocron.Scheduler, c, d, n string, l map[string]string) (*MaintenanceWindow, error) {
 
 	// add the "name" from the maintenance window configuration to the metrics
 	// labelset.
@@ -138,12 +143,23 @@ func NewMaintenanceWindow(
 
 	m.Duration, err = time.ParseDuration(d)
 	if err != nil {
-		log.Println("ERROR: Failed to parse duration: %v\n", err)
+		log.Printf("ERROR: Failed to parse duration: %v\n", err)
 		return nil, err
 	}
 
-	m.Job, err = s.Cron(c).Do(m.Task)
-	m.Job.SingletonMode()
+	jobDef := gocron.CronJob(c, true)
+	task := gocron.NewTask(m.Task)
+	job, err := s.NewJob(jobDef, task)
+	if err != nil {
+		log.Fatalf("Could not create cronjob \"%v\": %v", m.Name, err)
+	}
+	nextRunTime, err := job.NextRun()
+	if err != nil {
+		log.Printf("ERROR: could not obtain next run time for job: %v: %v", job.ID(), err)
+		return nil, err
+	}
+	log.Tracef("Scheduled job: %v, with id: %v, next run: %v", m.Name, job.ID(), nextRunTime)
+	m.Job = job
 
 	return &m, err
 
@@ -192,8 +208,10 @@ func init() {
 
 func main() {
 
-	s := gocron.NewScheduler(tz)
-	_ = s
+	s, err := gocron.NewScheduler(gocron.WithLocation(tz))
+	if err != nil {
+		log.Fatalf("Could not create gocron scheduler: %v", err)
+	}
 
 	var maintenanceWindows []*MaintenanceWindow
 	for _, w := range c.Windows {
@@ -214,11 +232,16 @@ func main() {
 	}
 
 	log.Println("Starting the scheduler...")
-	s.StartAsync()
+	s.Start()
 
 	log.Printf("-----------------------------------------------")
 	for _, m := range maintenanceWindows {
-		log.Printf("\"%v\" Nextrun: %v", m.Name, m.Job.NextRun().In(tz).Format("2006-01-02 15:04:05"))
+		nextRun, err := m.Job.NextRun()
+		if err != nil {
+			log.Fatalf("ERROR: Nextrun: %v, %v", m.Name, err)
+		}
+		log.Printf("\"%v\" Nextrun: %v", m.Name, nextRun.In(tz).
+			Format("2006-01-02 15:04:05"))
 	}
 	log.Printf("-----------------------------------------------")
 
