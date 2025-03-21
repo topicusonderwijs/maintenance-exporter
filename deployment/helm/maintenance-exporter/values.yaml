@@ -87,7 +87,7 @@ affinity: {}
 
 exporterYamlConfig:
   config:
-    timezone: Europe/Amsterdam  # default: UTC
+    timezone: UTC
     logformat: text             # or "json"
   windows:
     - name: testy mctestface
