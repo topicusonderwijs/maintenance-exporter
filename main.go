@@ -17,7 +17,7 @@ var (
 	commit  = "none"
 	date    = "unknown"
 
-	c Config
+	c  Config
 	tz *time.Location
 )
 
@@ -36,6 +36,7 @@ type MaintenanceWindowConfig struct {
 	Duration string            `yaml:"duration"`
 	Labels   map[string]string `yaml:"labels"`
 	Cron     string            `yaml:"cron"`
+	Timezone string            `yaml:"timezone,omitempty"`
 }
 
 // Config describes the yaml configuration file.
@@ -57,6 +58,7 @@ type MaintenanceWindow struct {
 	Job            gocron.Job
 	Gauge          *metrics.Gauge
 	gaugeValue     float64
+	tz             *time.Location
 }
 
 // Task is the function that sets the metric to 1 en resets it to 0 once the
@@ -117,7 +119,7 @@ func (m *MaintenanceWindow) getGaugeValue() float64 {
 // NewMaintenanceWindow instantiates a MaintenanceWindow from string values. The
 // string values are parsed to the according types.
 func NewMaintenanceWindow(
-	s gocron.Scheduler, c, d, n string, l map[string]string) (*MaintenanceWindow, error) {
+	s gocron.Scheduler, c, d, n, cfgTz string, l map[string]string) (*MaintenanceWindow, error) {
 
 	// add the "name" from the maintenance window configuration to the metrics
 	// labelset.
@@ -129,6 +131,14 @@ func NewMaintenanceWindow(
 	m.Name = n
 	m.Labels = l
 	m.CronExpression = c
+	m.tz = tz
+	if cfgTz != "" {
+		m.tz, err = time.LoadLocation(cfgTz)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	m.Labels["configured_timezone"] = m.tz.String()
 
 	// construct the gauge name:
 	// maintenance_active{name="asdfasdf",label_a="value_a",...}
@@ -153,7 +163,8 @@ func NewMaintenanceWindow(
 		return nil, err
 	}
 
-	jobDef := gocron.CronJob(c, true)
+	cronString := fmt.Sprintf("CRON_TZ=%v %v", m.tz.String(), c)
+	jobDef := gocron.CronJob(cronString, true)
 	task := gocron.NewTask(m.Task)
 	job, err := s.NewJob(jobDef, task)
 	if err != nil {
@@ -228,6 +239,7 @@ func main() {
 			w.Cron,
 			w.Duration,
 			w.Name,
+			w.Timezone,
 			w.Labels,
 		)
 		if err != nil {
@@ -247,8 +259,15 @@ func main() {
 		if err != nil {
 			log.Fatalf("ERROR: Nextrun: %v, %v", m.Name, err)
 		}
-		log.Printf("\"%v\" Nextrun: %v", m.Name, nextRun.In(tz).
-			Format("2006-01-02 15:04:05"))
+		msg := fmt.Sprintf("\"%v\" Nextrun: %v (%v)", m.Name, nextRun.In(tz).
+			Format("2006-01-02 15:04:05"), tz.String())
+
+		if m.tz != tz {
+			msg += fmt.Sprintf(" / %v(%v)", nextRun.In(m.tz).
+				Format("2006-01-02 15:04:05"), m.tz.String())
+		}
+
+		log.Printf(msg)
 	}
 	log.Printf("-----------------------------------------------")
 
