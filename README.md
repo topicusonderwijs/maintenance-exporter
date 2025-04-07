@@ -53,6 +53,8 @@ windows:
                               #       used to make the "maintenance window" 
                               #       unique.
     cron: "0 12 * * 0"
+    timezone: UTC             # This maintenance window follows UTC instead of
+                              # the global "Europe/Amsterdam" configuration.
     duration: 2h
     labels:
       component: bar
@@ -61,8 +63,8 @@ windows:
 The metrics would then look like this:
 ```console
 > curl http://localhost:9099/metrics
-maintenance_active{component="bar",name="restore staging"} 0
-maintenance_active{component="foo",name="restore staging"} 0
+maintenance_active{component="bar",name="restore staging",configured_timezone="UTC"} 0
+maintenance_active{component="foo",name="restore staging",configured_timezone="Europe/Amsterdam"} 0
 ```
 
 
