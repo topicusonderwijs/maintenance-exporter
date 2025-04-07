@@ -17,5 +17,9 @@
       ],
       automerge: true,
     },
+    {
+      matchPackageNames: ["release-drafter/release-drafter"],
+      allowedVersions: "<6.1.0",
+    },
   ],
 }
