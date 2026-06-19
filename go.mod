@@ -3,7 +3,7 @@ module github.com/topicusonderwijs/maintenance-exporter
 go 1.24.0
 
 require (
-	github.com/VictoriaMetrics/metrics v1.43.2
+	github.com/VictoriaMetrics/metrics v1.44.0
 	github.com/fsnotify/fsnotify v1.10.1
 	github.com/go-co-op/gocron/v2 v2.21.2
 	github.com/sirupsen/logrus v1.9.4
