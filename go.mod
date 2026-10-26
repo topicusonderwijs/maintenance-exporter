@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/VictoriaMetrics/metrics v1.44.1
 	github.com/fsnotify/fsnotify v1.10.1
-	github.com/go-co-op/gocron/v2 v2.22.0
+	github.com/go-co-op/gocron/v2 v2.23.0
 	github.com/sirupsen/logrus v1.10.2
 	github.com/spf13/viper v1.21.0
 )
