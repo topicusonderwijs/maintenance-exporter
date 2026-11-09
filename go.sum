@@ -87,6 +87,8 @@ github.com/go-co-op/gocron/v2 v2.22.0 h1:uEuH2F7k7VoESb1BYSaffuuV+T0kkpzsC0aXk7/
 github.com/go-co-op/gocron/v2 v2.22.0/go.mod h1:hiH/U9RMhTi1BBZJmef9s3KC9QwhpBF6PFrvUKaXY9M=
 github.com/go-co-op/gocron/v2 v2.23.0 h1:Qkhe0ZlUf3sRMCEuoXRi5VU/t8fi5lyD97eO+PsGJ4g=
 github.com/go-co-op/gocron/v2 v2.23.0/go.mod h1:QwAfxPmGC9tPDL5R9R3inaJYPDvYEXs/zkYrXD3L9jk=
+github.com/go-co-op/gocron/v2 v2.23.1 h1:DAM4k6jfBHaaaLS0yCps8Jdq3smQZRoEg+/hwR5bLlk=
+github.com/go-co-op/gocron/v2 v2.23.1/go.mod h1:QwAfxPmGC9tPDL5R9R3inaJYPDvYEXs/zkYrXD3L9jk=
 github.com/go-viper/mapstructure/v2 v2.2.1 h1:ZAaOCxANMuZx5RCeg0mBdEZk7DZasvvZIxtHqx8aGss=
 github.com/go-viper/mapstructure/v2 v2.2.1/go.mod h1:oJDH3BJKyqBA2TXFhDsKDGDTlndYOZ6rGS0BRZIxGhM=
 github.com/go-viper/mapstructure/v2 v2.4.0 h1:EBsztssimR/CONLSZZ04E8qAkxNYq4Qp9LvH92wZUgs=
